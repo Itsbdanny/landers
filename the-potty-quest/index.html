@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campaign Dashboard: The Potty Quest</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Sora,system-ui,sans-serif;background:#070b14;color:#dbe4f0;line-height:1.6;min-height:100vh;overflow-x:hidden}
+.blob{position:fixed;border-radius:50%;filter:blur(140px);z-index:0;pointer-events:none}
+.b1{width:480px;height:480px;background:#2e7d32;opacity:.3;top:-200px;left:-160px}
+.b2{width:420px;height:420px;background:#3b62c4;opacity:.22;top:-160px;right:-140px}
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:40px 20px 70px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#7ee085,#2e7d32);display:flex;align-items:center;justify-content:center;font-weight:800;color:#06210b}
+.wm{font-weight:800;font-size:15px;color:#fff}
+.tag{display:inline-flex;align-items:center;gap:8px;background:rgba(46,125,50,.14);color:#7ee085;border:1px solid rgba(46,125,50,.4);padding:6px 15px;border-radius:30px;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;background:#7ee085;box-shadow:0 0 10px #7ee085;animation:p 1.8s infinite}
+@keyframes p{50%{opacity:.35}}
+h1{font-size:clamp(32px,6vw,50px);font-weight:800;letter-spacing:-1.4px;line-height:1.08;margin:18px 0 10px;background:linear-gradient(100deg,#fff 25%,#8fa6c4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:#7d8fa8;font-size:15px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 34px}
+.chip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);padding:7px 13px;border-radius:10px;font-size:12px;color:#a8bad0}
+.chip b{color:#fff}
+h2{font-size:13px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#7d8fa8;margin:0 0 14px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px}
+.card{display:block;text-decoration:none;color:inherit;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-top:3px solid var(--c);border-radius:18px;padding:20px;transition:transform .2s,background .2s,border-color .2s}
+.card:hover{transform:translateY(-4px);background:rgba(255,255,255,.07);border-color:var(--c)}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.badge{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--c);background:rgba(255,255,255,.06);border:1px solid var(--c)}
+.nm{font-weight:700;color:#fff;flex:1}
+.go{font-size:12px;color:var(--c);font-weight:700}
+.card p{font-size:13.5px;color:#a8bad0;margin-bottom:12px}
+.thumb{display:block;margin:-20px -20px 14px;aspect-ratio:16/9;background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.01));border-radius:15px 15px 0 0;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.card code{display:block;font-size:11px;color:#6b7f9a;word-break:break-all;background:rgba(0,0,0,.25);padding:8px 10px;border-radius:8px}
+.panel{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:22px;margin-bottom:40px}
+.tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.tab{font-family:inherit;font-size:13.5px;font-weight:700;color:#a8bad0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:9px 18px;border-radius:30px;cursor:pointer}
+.tab.on{color:#070b14;background:var(--c);border-color:var(--c)}
+.pane{display:none}.pane.on{display:block}
+.lp{font-size:12.5px;color:#7d8fa8;margin-bottom:14px}.lp a{color:#7ee085}
+.grp{margin-bottom:20px}
+.grp h4{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#8fa6c4;margin-bottom:8px}
+.grp ul{list-style:none;display:grid;gap:8px}
+.grp li{display:flex;gap:12px;align-items:flex-start;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px 14px}
+.grp .t{flex:1;font-size:14px;color:#dbe4f0}
+.cp{font-family:inherit;flex:0 0 auto;font-size:11.5px;font-weight:700;color:#7ee085;background:rgba(126,224,133,.1);border:1px solid rgba(126,224,133,.35);border-radius:8px;padding:6px 11px;cursor:pointer}
+.cp.done{color:#070b14;background:#7ee085}
+.why{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:10px}
+.sc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;opacity:.55}
+.sc.on{opacity:1;background:rgba(126,224,133,.07);border-color:rgba(126,224,133,.35)}
+.sh{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:6px}.sh b{color:#fff;font-size:13.5px}
+.dots{font-size:12px;font-weight:700;color:#7ee085}.sc p{font-size:12px;color:#a8bad0}
+.adimgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:6px}.adimg{background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px;margin:0;min-width:0}.adimg img{width:100%;border-radius:8px;display:block;background:#0b1220}.adimg figcaption{font-size:11.5px;color:#a8bad0;margin:8px 0 0;line-height:1.4}.adimg figcaption b{color:#fff}.dl{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.dl a{font-size:11.5px;font-weight:700;color:#7ee085;background:rgba(126,224,133,.1);border:1px solid rgba(126,224,133,.35);border-radius:8px;padding:6px 10px;text-decoration:none}
+.srcl{font-size:12px;color:#6b7f9a;margin-bottom:34px}.srcl a{color:#7ee085}
+@media(max-width:760px){.why{grid-template-columns:1fr 1fr}}
+.notice{background:rgba(59,98,196,.12);border:1px solid rgba(96,165,250,.35);border-radius:14px;padding:14px 16px;font-size:13.5px;color:#c4d2e6;margin-bottom:10px}.notice b{color:#93c5fd}.notice.warn{background:rgba(250,204,21,.07);border-color:rgba(250,204,21,.35)}.notice.warn b{color:#fde68a}.notices{margin:-10px 0 34px}.fmt{display:inline-block;font-size:11px;font-weight:700;color:#c4d2e6;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:3px 10px;margin:0 0 10px}.why{margin-bottom:34px!important}.foot{margin-top:40px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);text-align:center;font-size:11.5px;color:#4e5f78}
+@media(max-width:760px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<style>.grp .t{min-width:0;overflow-wrap:anywhere}.notice code,.card code{overflow-wrap:anywhere}.wrap{overflow-wrap:break-word}</style>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="wrap">
+<div class="top"><div class="mark">C</div><span class="wm">Campaign Agent</span></div>
+<span class="tag"><span class="dot"></span>Soft launch &middot; ads in draft</span>
+<h1>The Potty Quest</h1>
+<p class="sub">Our own product, not an affiliate offer: no new landers. The live funnel, 3 Facebook angles with ad copy and image ads, and the tracking link for each.</p>
+<div class="meta"><span class="chip">Soft launch &middot; <b>Nov 14, 2026</b></span><span class="chip">Product &middot; <b>$9.99 one-time web app</b></span><span class="chip">Traffic &middot; <b>Facebook + Instagram</b></span><span class="chip">Destination &middot; <b>thepottyquest.com</b></span><span class="chip">Ads &middot; <b>Drafts, not approved</b></span></div>
+<div class="notices">
+<div class="notice warn"><b>Drafts:</b> none of this copy or these images is approved. Nothing runs until the owner signs off, and Meta has the final say on approval.</div>
+<div class="notice"><b>Written to the ads compliance brief:</b> no outcome promises (no “potty trained in 14 days”, “guaranteed” or “works for every toddler”), no medical or expert claims, no guilt or fear. Potty refusal is described as a common stage, never as a claim about the viewer or their child (Meta’s personal-attributes rule). The free tip is described as matching how the toddler reacts, which is what picks it.</div>
+<div class="notice"><b>Tracking:</b> each angle has its own link. <code>utm_content</code> names the angle, so WooCommerce Order Attribution shows which one sold. On /play links the tags must come <b>before</b> the <code>#</code>. Use <code>paid_social</code> for paid ads and <code>social</code> for organic posts.</div>
+<div class="notice"><b>Images:</b> official Ellie art only, cut from the character sheet. The cut-outs are low resolution, so the feed ads look slightly soft up close. Fine in the feed; check them in Ads Manager’s preview.</div>
+</div>
+<h2>Why these angles</h2>
+<div class="why">
+<div class="sc on"><div class="sh"><b>Curiosity</b><span class="dots">5/5</span></div><p>The free tip turns on one real insight (the yes-or-no “question trap”, the chase, the big leap), so the click closes a genuine loop.</p></div>
+<div class="sc on"><div class="sh"><b>Direct Benefit</b><span class="dots">5/5</span></div><p>The product is easy to picture: one playful activity a day for 14 days with Ellie. Clear for warmer viewers, and it lands on the full homepage.</p></div>
+<div class="sc on"><div class="sh"><b>Pain Point</b><span class="dots">4/5</span></div><p>The NO standoff is the moment every parent in this stage knows. Written as a common stage, never as a claim about the viewer.</p></div>
+<div class="sc"><div class="sh"><b>Social Proof</b><span class="dots">1/5</span></div><p>Skipped: no published reviews or numbers yet, and the method never invents them. Revisit once real reviews exist.</p></div>
+<div class="sc"><div class="sh"><b>Fear</b><span class="dots">1/5</span></div><p>Skipped: plays on parental guilt and worry, which brief 06 rules out, and it edges into health claims.</p></div>
+</div>
+<h2>Funnel pages (live, not built here)</h2>
+<div class="cards"><a class="card" href="https://thepottyquest.com/" target="_blank" rel="noopener" style="--c:#f472b6">
+<span class="thumb"><img src="img/home.jpg" alt="" style="object-fit:cover" onerror="this.style.opacity=0"></span><div class="ch"><span class="badge">A</span><span class="nm">Homepage (long page)</span><span class="go">Open &#8599;</span></div><span class="fmt">Sales page</span>
+<p>The full story: how it works, a peek inside Potty Island, FAQs. Every button goes to the first quiz question.</p><code>https://thepottyquest.com/</code></a><a class="card" href="https://thepottyquest.com/play/#/start" target="_blank" rel="noopener" style="--c:#a78bfa">
+<span class="thumb"><img src="img/quiz.webp" alt="" style="object-fit:cover" onerror="this.style.opacity=0"></span><div class="ch"><span class="badge">B</span><span class="nm">Free quiz (short page)</span><span class="go">Open &#8599;</span></div><span class="fmt">Quiz</span>
+<p>Straight to question 1. The free tip shows on screen before any email is asked for, then the $9.99 offer.</p><code>https://thepottyquest.com/play/#/start</code></a><a class="card" href="https://thepottyquest.com/free" target="_blank" rel="noopener" style="--c:#facc15">
+<span class="thumb" style="background:#F5F0FF"><img src="img/free.webp" alt="" style="object-fit:contain" onerror="this.style.opacity=0"></span><div class="ch"><span class="badge">C</span><span class="nm">Short link /free</span><span class="go">Open &#8599;</span></div><span class="fmt">Organic posts</span>
+<p>For posts and groups. Redirects to the quiz with the launch_nov26_short tags already on.</p><code>https://thepottyquest.com/free</code></a></div>
+<h2>Ad copy</h2>
+<div class="panel"><div class="tabs"><button class="tab on" data-t="Pain-Point" type="button" style="--c:#f472b6">Pain Point</button><button class="tab" data-t="Curiosity" type="button" style="--c:#a78bfa">Curiosity</button><button class="tab" data-t="Direct-Benefit" type="button" style="--c:#facc15">Direct Benefit</button></div><div class="pane on" id="p-Pain-Point"><div class="lp">Lands on <a href="https://thepottyquest.com/play/#/start" target="_blank" rel="noopener">the free quiz (short page), first question</a></div>
+<div class="grp"><h4>Image ads</h4><div class="adimgs"><figure class="adimg"><img src="ads/img/pain-feed-4x5.webp" alt="" loading="lazy"><figcaption><b>Feed 4:5</b><br>Facebook &amp; Instagram feed</figcaption><div class="dl"><a href="ads/img/pain-feed-4x5.webp" download>Download</a></div></figure><figure class="adimg"><img src="ads/img/pain-feed-1x1.webp" alt="" loading="lazy"><figcaption><b>Feed 1:1</b><br>Facebook, Instagram, Audience Network</figcaption><div class="dl"><a href="ads/img/pain-feed-1x1.webp" download>Download</a></div></figure></div></div>
+<div class="grp"><h4>Ad link (paid)</h4><ul><li><span class="t">https://thepottyquest.com/play/?utm_source=facebook&amp;utm_medium=paid_social&amp;utm_campaign=launch_nov26_short&amp;utm_content=pain#/start</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Hooks (under 15 words)</h4><ul><li><span class="t">When “potty” gets an instant NO, pushing harder isn’t the only option.</span><button class="cp" type="button">Copy</button></li><li><span class="t">The daily potty standoff doesn’t have to be a battle.</span><button class="cp" type="button">Copy</button></li><li><span class="t">Some toddlers say NO before you finish the word “potty.” It’s common.</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>PAS body (Pain → Agitate → Solution)</h4><ul><li><span class="t">Lots of toddlers hear “potty” and say NO on the spot. Ask again and the NO gets louder, and soon the potty feels like a daily standoff. The Potty Quest starts with a few quick questions and one playful, pressure-free tip to try today. Free, about a minute.</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Meta / Facebook: primary text</h4><ul><li><span class="t">Some toddlers hear the word “potty” and say NO before you finish the sentence. It’s a very common stage. Answer a few quick questions and get one playful, pressure-free tip to try today. Free, about a minute.</span><button class="cp" type="button">Copy</button></li><li><span class="t">When every potty mention turns into a standoff, it can help to change the game instead of asking harder. Ellie the elephant turns the first steps into play. Get one tip to try today, free.</span><button class="cp" type="button">Copy</button></li><li><span class="t">You mention the potty. The answer is NO, again. Tomorrow, try a different way in: no pressure, just one small, playful step with Ellie the elephant. Get your free tip in about a minute.</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Meta / Facebook: headlines (≤40 characters)</h4><ul><li><span class="t">When “Potty” Gets an Instant NO</span><button class="cp" type="button">Copy</button></li><li><span class="t">A Pressure-Free First Potty Step</span><button class="cp" type="button">Copy</button></li><li><span class="t">Get a Free Potty Tip in 1 Minute</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Meta / Facebook: descriptions (≤30 characters)</h4><ul><li><span class="t">Free tip. About a minute.</span><button class="cp" type="button">Copy</button></li><li><span class="t">Playful and pressure-free.</span><button class="cp" type="button">Copy</button></li></ul></div>
+</div><div class="pane" id="p-Curiosity"><div class="lp">Lands on <a href="https://thepottyquest.com/play/#/start" target="_blank" rel="noopener">the free quiz (short page), first question</a></div>
+<div class="grp"><h4>Image ads</h4><div class="adimgs"><figure class="adimg"><img src="ads/img/curiosity-feed-4x5.webp" alt="" loading="lazy"><figcaption><b>Feed 4:5</b><br>Facebook &amp; Instagram feed</figcaption><div class="dl"><a href="ads/img/curiosity-feed-4x5.webp" download>Download</a></div></figure><figure class="adimg"><img src="ads/img/curiosity-feed-1x1.webp" alt="" loading="lazy"><figcaption><b>Feed 1:1</b><br>Facebook, Instagram, Audience Network</figcaption><div class="dl"><a href="ads/img/curiosity-feed-1x1.webp" download>Download</a></div></figure></div></div>
+<div class="grp"><h4>Ad link (paid)</h4><ul><li><span class="t">https://thepottyquest.com/play/?utm_source=facebook&amp;utm_medium=paid_social&amp;utm_campaign=launch_nov26_short&amp;utm_content=curiosity#/start</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Hooks (under 15 words)</h4><ul><li><span class="t">The first potty step doesn’t have to be sitting.</span><button class="cp" type="button">Copy</button></li><li><span class="t">Why “Do you need to go potty?” makes NO the easiest answer.</span><button class="cp" type="button">Copy</button></li><li><span class="t">Run, cry or just say NO? Each reaction needs a different first step.</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>PAS body (Pain → Agitate → Solution)</h4><ul><li><span class="t">A yes-or-no question makes NO the easiest answer, and at this age NO often comes out first. The more it happens, the more the potty becomes a battle. Tell us how your toddler reacts and Ellie suggests one playful thing to try today. Free.</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Meta / Facebook: primary text</h4><ul><li><span class="t">When toddlers refuse the potty, the first step doesn’t always have to be sitting. Tell us how your little one reacts when the potty comes up, and get one playful thing to try today. Free, about a minute.</span><button class="cp" type="button">Copy</button></li><li><span class="t">“Do you need to go potty?” sounds helpful, but it makes NO the easiest answer. There’s a gentler way to ask. Answer a few quick questions to get the tip that fits your toddler’s reaction, free.</span><button class="cp" type="button">Copy</button></li><li><span class="t">Saying NO, running off, tears, or only wanting diapers: each reaction calls for a different first step. Pick the one that sounds familiar and Ellie the elephant shows you one playful thing to try today.</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Meta / Facebook: headlines (≤40 characters)</h4><ul><li><span class="t">The First Step Isn’t Always Sitting</span><button class="cp" type="button">Copy</button></li><li><span class="t">Why “Do You Need to Go?” Backfires</span><button class="cp" type="button">Copy</button></li><li><span class="t">Which Potty Tip Fits Your Toddler?</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Meta / Facebook: descriptions (≤30 characters)</h4><ul><li><span class="t">Free. About a minute.</span><button class="cp" type="button">Copy</button></li><li><span class="t">One playful tip to try today.</span><button class="cp" type="button">Copy</button></li></ul></div>
+</div><div class="pane" id="p-Direct-Benefit"><div class="lp">Lands on <a href="https://thepottyquest.com/" target="_blank" rel="noopener">the homepage (long page)</a></div>
+<div class="grp"><h4>Image ads</h4><div class="adimgs"><figure class="adimg"><img src="ads/img/benefit-feed-4x5.webp" alt="" loading="lazy"><figcaption><b>Feed 4:5</b><br>Facebook &amp; Instagram feed</figcaption><div class="dl"><a href="ads/img/benefit-feed-4x5.webp" download>Download</a></div></figure><figure class="adimg"><img src="ads/img/benefit-feed-1x1.webp" alt="" loading="lazy"><figcaption><b>Feed 1:1</b><br>Facebook, Instagram, Audience Network</figcaption><div class="dl"><a href="ads/img/benefit-feed-1x1.webp" download>Download</a></div></figure></div></div>
+<div class="grp"><h4>Ad link (paid)</h4><ul><li><span class="t">https://thepottyquest.com/?utm_source=facebook&amp;utm_medium=paid_social&amp;utm_campaign=launch_nov26_long&amp;utm_content=benefit</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Hooks (under 15 words)</h4><ul><li><span class="t">One playful potty activity a day, with Ellie the elephant.</span><button class="cp" type="button">Copy</button></li><li><span class="t">A 14-day potty adventure built on play, not pressure.</span><button class="cp" type="button">Copy</button></li><li><span class="t">Turn potty time into a game your toddler gets to win.</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>PAS body (Pain → Agitate → Solution)</h4><ul><li><span class="t">Potty time can turn into a tug-of-war that wears everyone out. The Potty Quest is a playful 14-day adventure: one short activity a day, a “say this” line for you, and stars along the way. Start with a free tip, no download needed.</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Meta / Facebook: primary text</h4><ul><li><span class="t">The Potty Quest is a playful 14-day adventure with Ellie the elephant: one simple activity a day, made to help toddlers feel more comfortable around the potty. Start with a free tip.</span><button class="cp" type="button">Copy</button></li><li><span class="t">Teddy goes first. Then a potty parade, a potty story, a royal throne. One small, playful mission a day for 14 days, with exactly what to say. Try a free tip first, then decide.</span><button class="cp" type="button">Copy</button></li><li><span class="t">Pressure-free potty practice, one day at a time. Each day unlocks a new playful mission with Ellie, plus bonus printables. It works in your phone’s browser, nothing to download. Start with a free tip.</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Meta / Facebook: headlines (≤40 characters)</h4><ul><li><span class="t">One Playful Potty Activity a Day</span><button class="cp" type="button">Copy</button></li><li><span class="t">A 14-Day Potty Adventure</span><button class="cp" type="button">Copy</button></li><li><span class="t">Potty Practice, Made Playful</span><button class="cp" type="button">Copy</button></li></ul></div>
+<div class="grp"><h4>Meta / Facebook: descriptions (≤30 characters)</h4><ul><li><span class="t">Start with a free tip.</span><button class="cp" type="button">Copy</button></li><li><span class="t">No app download needed.</span><button class="cp" type="button">Copy</button></li></ul></div>
+</div></div>
+<p class="foot">Generated by the Campaign Agent &middot; Claude Code</p>
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){
+document.querySelectorAll('.tab,.pane').forEach(function(e){e.classList.remove('on')});
+t.classList.add('on');document.getElementById('p-'+t.dataset.t).classList.add('on');})});
+document.querySelectorAll('.cp').forEach(function(b){b.addEventListener('click',function(){
+var txt=b.previousElementSibling.textContent;
+var done=function(){b.textContent='Copied';b.classList.add('done');setTimeout(function(){b.textContent='Copy';b.classList.remove('done')},1400)};
+if(navigator.clipboard){navigator.clipboard.writeText(txt).then(done,function(){})}})});
+</script>
+</body>
+</html>

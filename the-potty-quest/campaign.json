@@ -1,0 +1,16 @@
+{
+  "name": "The Potty Quest",
+  "traffic": "Facebook",
+  "link": "https://thepottyquest.com/play/#/start",
+  "notes": "Our own product site (no landers, no affiliate link). Dashboard holds the Facebook ad drafts; nothing runs until it is approved.",
+  "pages": [
+    "https://thepottyquest.com/",
+    "https://thepottyquest.com/play/",
+    "https://thepottyquest.com/free"
+  ],
+  "legal": [
+    "https://thepottyquest.com/privacy-policy/",
+    "https://thepottyquest.com/terms/",
+    "https://thepottyquest.com/refunds/"
+  ]
+}
