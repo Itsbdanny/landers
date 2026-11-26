@@ -11,7 +11,9 @@
 //                "cta": "Tap the button below", "bg": "#1d3b53", "accent": "#c2410c" },
 //   "voice": "optional/voiceover.mp3",                   // optional narration track
 //   "clipAudio": true,                                   // optional: keep each clip's own sound (talking narrator clips)
-//   "captionPosition": "lower"                           // optional: "upper" (default, b-roll) or "lower" (a face on screen)
+//   "captionPosition": "lower",                          // optional: "upper" (default, b-roll) or "lower" (a face on screen)
+//   "captionSize": 84,                                   // optional: bigger, punchier captions (for 2-3 word subtitles)
+//   "title": "The secret to that first sit"              // optional: hook title over the clips (black on white, near the top)
 // }
 // A clip can carry several timed captions instead of one: "captions": [ { "text": "...", "from": 0, "to": 3.5 }, ... ]
 // (seconds from the start of that clip).
@@ -131,11 +133,15 @@ try {
   for (const f of formats) {
     const vf = [];
     if (f.h !== 1920) vf.push(`crop=${f.w}:${f.h}:0:${(1920 - f.h) / 2}`);
+    const capSize = Number(spec.captionSize) || f.cap;
     for (const wdw of windows) {
       if (!wdw.caption) continue;
-      vf.push(...textBlock(tmp, { lines: wrap(wdw.caption, f.chars), font: FONT_BOLD, size: f.cap, color: 'white',
-        yCenter: Math.round(f.h * f.capY), start: wdw.start + 0.15, end: wdw.end - 0.05, box: 'black@0.62' }));
+      vf.push(...textBlock(tmp, { lines: wrap(wdw.caption, Math.round(f.chars * f.cap / capSize)), font: FONT_BOLD, size: capSize, color: 'white',
+        yCenter: Math.round(f.h * f.capY), start: wdw.start + (spec.captionSize ? 0 : 0.15), end: wdw.end - (spec.captionSize ? 0 : 0.05), box: 'black@0.62' }));
     }
+    // Optional title banner over the clips (black text on a white box near the top), like a talking-head hook title.
+    if (spec.title) vf.push(...textBlock(tmp, { lines: wrap(String(spec.title).toUpperCase(), f.h === 1920 ? 20 : 24), font: FONT_BOLD,
+      size: f.h === 1920 ? 56 : 50, color: 'black', yCenter: Math.round(f.h * (f.h === 1920 ? 0.13 : 0.11)), start: 0, end: endStart, box: 'white@0.92' }));
     const pillW = 780, pillH = 120, pillY = Math.round(f.h * 0.66);
     if (end.brand) vf.push(...textBlock(tmp, { lines: [end.brand], font: FONT_SEMI, size: 40, color: 'white@0.85',
       yCenter: Math.round(f.h * 0.30), start: endStart, end: total }));
