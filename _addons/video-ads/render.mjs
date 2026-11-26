@@ -28,6 +28,11 @@ const FPS = 30;
 
 function die(msg) { console.error('render: ' + msg); process.exit(1); }
 function ff(args) { execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', ...args], { stdio: 'inherit' }); }
+// ffmpeg 7+ reads an option's value from a file with "-/filter:v"; ffmpeg 9 dropped the old "-filter_script:v".
+const FILTER_FROM_FILE = (() => {
+  try { const v = execFileSync('ffmpeg', ['-version'], { encoding: 'utf8' }).match(/ffmpeg version n?(\d+)/); return v && Number(v[1]) >= 7 ? '-/filter:v' : '-filter_script:v'; }
+  catch { return '-filter_script:v'; }
+})();
 function hex(c) { return '0x' + String(c || '#000000').replace('#', ''); }
 
 // Wrap text into balanced lines of at most `max` characters (no lone word on the last line).
@@ -145,7 +150,7 @@ try {
     const audioIn = spec.voice ? ['-i', resolve(spec.voice)] : ['-f', 'lavfi', '-t', String(total), '-i', 'anullsrc=r=44100:cl=stereo'];
     if (spec.voice && !existsSync(resolve(spec.voice))) die('voice file not found: ' + spec.voice);
     const af = spec.voice ? ['-af', `apad,atrim=0:${total},afade=t=out:st=${Math.max(0, total - 0.4)}:d=0.4`] : [];
-    ff(['-i', base, ...audioIn, '-filter_script:v', writeFilter(tmp, f.name, vf), ...af, '-map', '0:v', '-map', '1:a',
+    ff(['-i', base, ...audioIn, FILTER_FROM_FILE, writeFilter(tmp, f.name, vf), ...af, '-map', '0:v', '-map', '1:a',
       '-t', String(total), '-c:v', 'libx264', '-preset', 'medium', '-crf', '26', '-maxrate', '3M', '-bufsize', '6M',
       '-pix_fmt', 'yuv420p', '-r', String(FPS), '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', file]);
     results.push(file);
