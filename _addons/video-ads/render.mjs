@@ -137,11 +137,11 @@ try {
     for (const wdw of windows) {
       if (!wdw.caption) continue;
       vf.push(...textBlock(tmp, { lines: wrap(wdw.caption, Math.round(f.chars * f.cap / capSize)), font: FONT_BOLD, size: capSize, color: 'white',
-        yCenter: Math.round(f.h * f.capY), start: wdw.start + (spec.captionSize ? 0 : 0.15), end: wdw.end - (spec.captionSize ? 0 : 0.05), box: 'black@0.62' }));
+        yCenter: Math.round(f.h * f.capY), start: wdw.start + (spec.captionSize ? 0 : 0.15), end: wdw.end - (spec.captionSize ? 0.04 : 0.05), box: 'black@0.62' }));
     }
     // Optional title banner over the clips (black text on a white box near the top), like a talking-head hook title.
     if (spec.title) vf.push(...textBlock(tmp, { lines: wrap(String(spec.title).toUpperCase(), f.h === 1920 ? 20 : 24), font: FONT_BOLD,
-      size: f.h === 1920 ? 56 : 50, color: 'black', yCenter: Math.round(f.h * (f.h === 1920 ? 0.13 : 0.11)), start: 0, end: endStart, box: 'white@0.92' }));
+      size: f.h === 1920 ? 56 : 50, color: 'black', yCenter: Math.round(f.h * (f.h === 1920 ? 0.13 : 0.11)), start: 0, end: endStart - 0.04, box: 'white@0.92' }));
     const pillW = 780, pillH = 120, pillY = Math.round(f.h * 0.66);
     if (end.brand) vf.push(...textBlock(tmp, { lines: [end.brand], font: FONT_SEMI, size: 40, color: 'white@0.85',
       yCenter: Math.round(f.h * 0.30), start: endStart, end: total }));
